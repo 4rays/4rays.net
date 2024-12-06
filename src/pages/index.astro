@@ -9,28 +9,28 @@ changeLanguage("en");
 ---
 
 <Base title="Four Rays | Home">
-  <main>
-    <CompanyLogo />
-    <h1><span class="text-gradient">FOUR RAYS</span></h1>
-    <p class="intro">
-      An indie solopreneurship focusing on platform-native <em>app development and design</em>.
-      Currently developing products related to <em>video games</em> and <em>language learning</em>.
+  <div class="page-wrapper">
+    <main>
+      <CompanyLogo />
+      <h1><span class="text-gradient">FOUR RAYS</span></h1>
+      <p class="intro">
+        A solopreneurship focusing on cutting-edge <em>digital product development and design</em>. 
       </p>
-    <ul role="list" class="link-card-grid">
-      <Card
-        href="https://combolab.app"
-        title="Combolab"
-        body="A reference app for creating and sharing Street Fighter 6™ combos."
-        image="combolab.png"
-      />
-      <Card
-        href="mailto:contact@4rays.net"
-        title="Contact"
-        body="Feel free to email us if you have any inquiries."
-      />
-    </ul>
-  </main>
-  <Footer />
+      <ul role="list" class="link-card-grid">
+        <Card
+          href="/"
+          title="Services"
+          body="App development and design, video game data pipelines, and AI-powered information processing and learning tools."
+        />
+        <Card
+          href="mailto:contact@4rays.net"
+          title="📮 Get in touch"
+          body="Have any questions or inquiries? I would love to hear from you."
+        />
+      </ul>
+    </main>
+    <Footer />
+  </div>
 </Base>
 
 <style>
@@ -41,10 +41,17 @@ html {
   background: var(--background-color);
 }
 
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 main {
   color: var(--text-primary-color);
   font-size: 1.2rem;
   line-height: 1.6;
+  flex: 1 0 auto;
 }
 
 .text-gradient {
