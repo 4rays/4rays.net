@@ -10,15 +10,17 @@ interface Props {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 let {
-  title = SITE_TITLE, 
+  title = SITE_TITLE,
   description = SITE_DESCRIPTION,
-  previewImage,
+  previewImage
 } = Astro.props;
 
-const previewImageURL = previewImage ? new URL(previewImage, Astro.site) : undefined;
+const previewImageURL = previewImage
+  ? new URL(previewImage, Astro.site)
+  : undefined;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -59,7 +61,7 @@ const previewImageURL = previewImage ? new URL(previewImage, Astro.site) : undef
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
-    
+
     <!-- Additional Meta Tags -->
     <slot name="head" />
 
@@ -69,9 +71,7 @@ const previewImageURL = previewImage ? new URL(previewImage, Astro.site) : undef
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
 
-    {previewImageURL && (
-      <meta property="og:image" content={previewImageURL} />
-    )}
+    {previewImageURL && <meta property="og:image" content={previewImageURL} />}
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />

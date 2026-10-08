@@ -4,24 +4,26 @@ import Base from "./Base.astro";
 const {title, description} = Astro.props.frontmatter || Astro.props;
 ---
 
-<Base title={title} description={description} >
-  <main class="prose dark:prose-invert w-full mx-auto sm:py-32 sm:px-10 py-16 px-5">
+<Base title={title} description={description}>
+  <main
+    class="prose dark:prose-invert mx-auto w-full px-5 py-16 sm:px-10 sm:py-32"
+  >
     <slot />
   </main>
 </Base>
 
 <style>
-:root {
-  --background-color: #1e1f22;
-}
-
-@media (prefers-color-scheme: light) {
   :root {
-    --background-color: #fff;
+    --background-color: #1e1f22;
   }
-}
 
-html {
-  background-color: var(--background-color);
-}
+  @media (prefers-color-scheme: light) {
+    :root {
+      --background-color: #fff;
+    }
+  }
+
+  html {
+    background-color: var(--background-color);
+  }
 </style>
