@@ -9,7 +9,7 @@
 
 Ordered queue: each item is one focused PR, and earlier items are prerequisites for later ones. Validate every item with `pnpm astro check`, `pnpm exec prettier --check .`, and `pnpm build` unless noted. Copy, the bilingual en/ja intent, and the visual identity must not change unless an item says so.
 
-- [ ] **Add Prettier config and format scripts**
+- [x] **Add Prettier config and format scripts**
   - Gap: `prettier`, `prettier-plugin-astro`, and `prettier-plugin-tailwindcss` are installed, but there is no Prettier config. Prettier 3 does not load plugins unless a config lists them, so `.astro` files are never formatted, and the existing code mixes styles (`{ changeLanguage }` vs `{SITE_TITLE, SITE_DESCRIPTION}`). `CLAUDE.md` wrongly says Prettier is configured.
   - Scope: add `.prettierrc.json` (`tabWidth: 2`, `useTabs: false`, `plugins: ["prettier-plugin-astro", "prettier-plugin-tailwindcss"]`, `bracketSpacing: false`, `trailingComma: "none"`). Add `.prettierignore` (`dist/`, `.astro/`, `node_modules/`, `pnpm-lock.yaml`). Add the `package.json` scripts `format` (`prettier --write .`), `format:check` (`prettier --check .`), and `check` (`astro check --minimumSeverity warning`). Run `pnpm format` once and commit the formatting-only diff.
   - Acceptance: `pnpm format:check` and `pnpm check` pass. The built `dist/index.html` text content does not change.

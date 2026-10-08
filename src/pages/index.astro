@@ -1,5 +1,5 @@
 ---
-import { changeLanguage } from "i18next";
+import {changeLanguage} from "i18next";
 import Base from "@layouts/Base.astro";
 import Card from "@components/Card.astro";
 import Footer from "@components/Footer.astro";
@@ -14,7 +14,9 @@ changeLanguage("en");
       <CompanyLogo />
       <h1><span class="text-gradient">FOUR RAYS</span></h1>
       <p class="intro">
-        We build cutting-edge, AI-native, human-friendly <em>digital products</em>. 
+        We build cutting-edge, AI-native, human-friendly <em
+          >digital products</em
+        >.
       </p>
       <ul role="list" class="link-card-grid">
         <Card
@@ -34,81 +36,81 @@ changeLanguage("en");
 </Base>
 
 <style>
-@custom-media --small-viewport (max-width: 38em);
+  @custom-media --small-viewport (max-width: 38em);
 
-html {
-  font-family: system-ui, sans-serif;
-  background: var(--background-color);
-}
-
-.page-wrapper {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-main {
-  color: var(--text-primary-color);
-  font-size: 1.2rem;
-  line-height: 1.6;
-  flex: 1 0 auto;
-}
-
-.text-gradient {
-  font-weight: 200;
-  margin-top: .5em;
-  display: block;
-}
-
-@keyframes outline {
-  0% {
-    stroke-dashoffset: 400;
+  html {
+    font-family: system-ui, sans-serif;
+    background: var(--background-color);
   }
-  50% {
-    stroke-dashoffset: 0;
+
+  .page-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
-  100% {
-    stroke-dashoffset: 400;
+
+  main {
+    color: var(--text-primary-color);
+    font-size: 1.2rem;
+    line-height: 1.6;
+    flex: 1 0 auto;
   }
-}
 
-h1 {
-  font-size: 1.8rem;
-  letter-spacing: .6rem;
-  font-weight: 100;
-  line-height: 1;
-  text-align: center;
-  margin-bottom: 3em;
-}
+  .text-gradient {
+    font-weight: 200;
+    margin-top: 0.5em;
+    display: block;
+  }
 
-.intro {
-  border-radius: 8px;
-  border: 2px solid rgba(var(--accent), 25%);
-  color: rgba(var(--accent));
-  letter-spacing: .1rem;
-  margin-bottom: 2rem;
-  padding: 1.5rem 3rem;
-  text-align: center;
+  @keyframes outline {
+    0% {
+      stroke-dashoffset: 400;
+    }
+    50% {
+      stroke-dashoffset: 0;
+    }
+    100% {
+      stroke-dashoffset: 400;
+    }
+  }
 
-  em {
+  h1 {
+    font-size: 1.8rem;
+    letter-spacing: 0.6rem;
+    font-weight: 100;
+    line-height: 1;
+    text-align: center;
+    margin-bottom: 3em;
+  }
+
+  .intro {
+    border-radius: 8px;
+    border: 2px solid rgba(var(--accent), 25%);
+    color: rgba(var(--accent));
+    letter-spacing: 0.1rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem 3rem;
+    text-align: center;
+
+    em {
+      text-decoration: underline;
+    }
+
+    @media (--small-viewport) {
+      font-size: 1rem;
+      padding: 1rem;
+    }
+  }
+
+  .intro a {
+    color: inherit;
     text-decoration: underline;
   }
 
-  @media (--small-viewport) {
-    font-size: 1rem;
-    padding: 1rem;
+  .link-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
+    gap: 2rem;
+    padding: 0;
   }
-}
-
-.intro a {
-  color: inherit;
-  text-decoration: underline;
-}
-
-.link-card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-  gap: 2rem;
-  padding: 0;
-}
 </style>

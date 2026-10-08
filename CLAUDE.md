@@ -64,6 +64,7 @@ pnpm astro [command]  # Run any Astro CLI command
 ### Meta & SEO
 
 The [Base.astro](src/layouts/Base.astro) layout handles:
+
 - Open Graph tags
 - Twitter cards
 - Canonical URLs
@@ -74,5 +75,6 @@ Site constants in [src/consts.ts](src/consts.ts) should be used for site-wide me
 ## Code Formatting
 
 Prettier is configured with:
+
 - `prettier-plugin-astro` for Astro files
 - `prettier-plugin-tailwindcss` for class sorting

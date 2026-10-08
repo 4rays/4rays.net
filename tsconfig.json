@@ -8,7 +8,7 @@
       "@components/*": ["src/components/*"],
       "@layouts/*": ["src/layouts/*"],
       "@consts": ["src/consts.ts"],
-      "@pages/*": ["src/pages/*"],
+      "@pages/*": ["src/pages/*"]
     },
     "strictNullChecks": true
   }
