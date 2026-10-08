@@ -1,37 +1,44 @@
 ---
-import {changeLanguage} from "i18next";
 import Base from "@/layouts/Base.astro";
 import Card from "@/components/Card.astro";
 import Footer from "@/components/Footer.astro";
 import CompanyLogo from "@/components/CompanyLogo.astro";
+import {
+  getLocaleFromParams,
+  getLocaleStaticPaths,
+  useTranslations
+} from "@/i18n/utils";
 
-changeLanguage("en");
+export function getStaticPaths() {
+  return getLocaleStaticPaths();
+}
+
+const locale = getLocaleFromParams(Astro.params);
+const t = useTranslations(locale);
 ---
 
-<Base title="Four Rays | Home">
+<Base title={t.home.title} locale={locale}>
   <div class="page-wrapper">
     <main>
       <CompanyLogo />
       <h1><span class="text-gradient">FOUR RAYS</span></h1>
       <p class="intro">
-        We build cutting-edge, AI-native, human-friendly <em
-          >digital products</em
-        >.
+        {t.home.intro.lead}<em>{t.home.intro.emphasis}</em>{t.home.intro.trail}
       </p>
       <ul role="list" class="link-card-grid">
         <Card
           href="/"
-          title="Services"
-          body="App development, agentic programming, AI strategy consulting."
+          title={t.home.services.title}
+          body={t.home.services.body}
         />
         <Card
           href="mailto:contact@4rays.net"
-          title="📮 Get in touch"
-          body="Have any questions or inquiries? I would love to hear from you."
+          title={t.home.contact.title}
+          body={t.home.contact.body}
         />
       </ul>
     </main>
-    <Footer />
+    <Footer locale={locale} />
   </div>
 </Base>
 

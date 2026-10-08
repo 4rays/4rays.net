@@ -20,9 +20,6 @@
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.17",
     "astro": "^5.15.5",
-    "astro-i18next": "1.0.0-beta.21",
-    "i18next": "^25.6.2",
-    "i18next-fs-backend": "^2.6.0",
     "tailwindcss": "^4.1.17",
     "typescript": "^5.9.3"
   },
