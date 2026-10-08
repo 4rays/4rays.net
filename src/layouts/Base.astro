@@ -1,5 +1,6 @@
 ---
 import {SITE_TITLE, SITE_DESCRIPTION} from "@/consts";
+import "@/styles.css";
 
 interface Props {
   title?: string;
@@ -102,7 +103,13 @@ const previewImageURL = previewImage
     }
   }
 
+  /* Restore the browser defaults that Tailwind's preflight reset. */
+  body {
+    margin: 8px;
+  }
+
   main {
+    box-sizing: content-box;
     margin: auto;
     padding: 1rem;
     width: 50rem;
