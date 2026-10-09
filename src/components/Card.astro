@@ -13,9 +13,7 @@ const {href, title, body, image} = Astro.props;
   <a href={href}>
     {image && <img src={image} alt={title} />}
     <div>
-      <h2>
-        {title}
-      </h2>
+      <h2>{title}</h2>
       <p>
         <Fragment set:html={body} />
       </p>
@@ -23,8 +21,6 @@ const {href, title, body, image} = Astro.props;
   </a>
 </li>
 <style>
-  @custom-media --small-viewport (max-width: 38em);
-
   .link-card {
     background-color: var(--card-color);
     background-image: none;
@@ -62,7 +58,7 @@ const {href, title, body, image} = Astro.props;
     padding: calc(1.5rem - 1px);
     text-decoration: none;
 
-    @media (--small-viewport) {
+    @media (max-width: 38em) {
       padding: 1rem;
     }
   }

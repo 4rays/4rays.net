@@ -21,9 +21,13 @@ const t = useTranslations(locale);
   <div class="page-wrapper">
     <main>
       <CompanyLogo />
-      <h1><span class="text-gradient">FOUR RAYS</span></h1>
+      <h1>
+        <span class="text-gradient">FOUR RAYS</span>
+      </h1>
       <p class="intro">
-        {t.home.intro.lead}<em>{t.home.intro.emphasis}</em>{t.home.intro.trail}
+        {t.home.intro.lead}
+        <em>{t.home.intro.emphasis}</em>
+        {t.home.intro.trail}
       </p>
       <ul role="list" class="link-card-grid">
         <Card
@@ -43,8 +47,6 @@ const t = useTranslations(locale);
 </Base>
 
 <style>
-  @custom-media --small-viewport (max-width: 38em);
-
   html {
     font-family: system-ui, sans-serif;
     background: var(--background-color);
@@ -105,7 +107,7 @@ const t = useTranslations(locale);
       text-decoration: underline;
     }
 
-    @media (--small-viewport) {
+    @media (max-width: 38em) {
       font-size: 1rem;
       padding: 1rem;
     }

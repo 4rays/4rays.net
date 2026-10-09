@@ -14,9 +14,7 @@ const {title, description} = Astro.props.frontmatter || Astro.props;
 ---
 
 <Base title={title} description={description} locale={locale}>
-  <main
-    class="prose dark:prose-invert mx-auto w-full px-5 py-16 sm:px-10 sm:py-32"
-  >
+  <main class="prose dark:prose-invert mx-auto w-full px-5 py-16 sm:px-10 sm:py-32">
     <slot />
   </main>
 </Base>
