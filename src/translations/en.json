@@ -1,0 +1,25 @@
+{
+  "site": {
+    "title": "Four Rays",
+    "description": "A solopreneurship by Reda Lemeden exploring platform-native app development and design."
+  },
+  "home": {
+    "title": "Four Rays | Home",
+    "intro": {
+      "lead": "We build cutting-edge, AI-native, human-friendly ",
+      "emphasis": "digital products",
+      "trail": "."
+    },
+    "services": {
+      "title": "Services",
+      "body": "App development, agentic programming, AI strategy consulting."
+    },
+    "contact": {
+      "title": "📮 Get in touch",
+      "body": "Have any questions or inquiries? I would love to hear from you."
+    }
+  },
+  "footer": {
+    "copyright": "© 2020-{year} Four Rays AB. Made with 🍵 in Stockholm."
+  }
+}
