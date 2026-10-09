@@ -30,7 +30,12 @@ export function localizeUrl(path: string, locale?: Locale): string {
   // Check if path already has a locale prefix
   const segments = cleanPath.split("/");
   if (locales.includes(segments[0] as Locale)) {
-    // Replace existing locale with new one
+    // The default locale lives at the root, so converting to it drops the
+    // prefix; converting between prefixed locales replaces it.
+    if (safeLocale === defaultLocale) {
+      segments.shift();
+      return segments.length > 0 ? `/${segments.join("/")}` : "/";
+    }
     segments[0] = safeLocale;
     return `/${segments.join("/")}`;
   }
