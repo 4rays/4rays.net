@@ -1,14 +1,33 @@
 export interface Project {
   name: string;
-  href: string;
-  /** Square image in /public, shown inside the circle. Falls back to a monogram. */
+  /** Leave out for projects that are not public yet; the circle is then not a link. */
+  href?: string;
+  /** Square image in /public, shown inside the circle. */
   image?: string;
+  /** Text inside the circle when there is no image. Defaults to the name's initials. */
+  mark?: string;
+  /** Language of `mark`, for correct glyphs and pronunciation. */
+  markLang?: string;
   tagline?: string;
 }
 
-// TODO: replace placeholders with the real links and images.
 export const PROJECTS: Project[] = [
-  { name: "Combolab", href: "#", image: "/combolab.png", tagline: "Placeholder tagline" },
-  { name: "Project Two", href: "#", tagline: "Placeholder tagline" },
-  { name: "Project Three", href: "#", tagline: "Placeholder tagline" },
+  {
+    name: "Circle",
+    href: "https://circle.so",
+    image: "/projects/circle.png",
+    tagline: "iOS Contractor",
+  },
+  {
+    name: "Combolab",
+    href: "https://combolab.app",
+    image: "/projects/combolab.png",
+    tagline: "Creator",
+  },
+  {
+    name: "TBA",
+    mark: "極秘",
+    markLang: "ja",
+    tagline: "Coming soon",
+  },
 ];

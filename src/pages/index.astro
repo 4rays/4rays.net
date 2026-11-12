@@ -40,7 +40,9 @@ const monogram = (name: string) =>
                 {project.image ? (
                   <img src={project.image} alt="" width="256" height="256" loading="lazy" />
                 ) : (
-                  <span class="monogram">{monogram(project.name)}</span>
+                  <span class="monogram" lang={project.markLang}>
+                    {project.mark ?? monogram(project.name)}
+                  </span>
                 )}
               </CircleLink>
             ))
@@ -181,6 +183,15 @@ const monogram = (name: string) =>
     font-weight: 300;
     letter-spacing: 0.08em;
     color: var(--text-secondary-color);
+  }
+
+  .monogram:lang(ja) {
+    font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", serif;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    /* Optical centring: trailing tracking would push the mark left. */
+    margin-right: -0.06em;
   }
 
   .orbit-text {
