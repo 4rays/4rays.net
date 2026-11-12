@@ -1,0 +1,197 @@
+---
+/**
+ * A circular link. The disc content comes from the default slot.
+ * Hover / focus: the ring traces itself in and the image comes to full colour.
+ */
+interface Props {
+  /** Leave out to render a non-interactive circle (for example, an unreleased project). */
+  href?: string;
+  name: string;
+  tagline?: string;
+  variant?: "project" | "contact";
+}
+
+const {href, name, tagline, variant = "project"} = Astro.props;
+const Tag = href ? "a" : "div";
+---
+
+<li class="circle-item">
+  <Tag class:list={["circle", variant]} href={href} data-circle>
+    <span class="orb">
+      <span class="disc">
+        <slot />
+      </span>
+      <svg class="orb-ring" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="49" pathLength="100"></circle>
+      </svg>
+    </span>
+    <span class="label">
+      <span class="name">{name}</span>
+      {tagline && <span class="tagline">{tagline}</span>}
+    </span>
+  </Tag>
+</li>
+
+<style>
+  .circle-item {
+    list-style: none;
+  }
+
+  .circle {
+    --size: 8.5rem;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.1rem;
+    width: calc(var(--size) + 2rem);
+    color: var(--text-primary-color);
+    text-decoration: none;
+    outline: none;
+
+    @media (max-width: 38em) {
+      --size: 7.25rem;
+      width: calc(var(--size) + 1.5rem);
+    }
+  }
+
+  .orb {
+    position: relative;
+    width: var(--size);
+    height: var(--size);
+    transition: transform 0.3s var(--ease);
+  }
+
+  .disc {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    border-radius: 50%;
+    background: var(--card-color);
+    box-shadow:
+      inset 0 0 0 1px var(--hairline),
+      0 10px 30px -12px rgb(0 0 0 / 0.45);
+    transition:
+      box-shadow 0.5s var(--ease),
+      background-color 0.4s var(--ease);
+  }
+
+  .disc :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.05);
+    transform: scale(1.001);
+    transition:
+      filter 0.5s var(--ease),
+      transform 0.7s var(--ease);
+  }
+
+  .orb-ring {
+    position: absolute;
+    inset: -7px;
+    width: calc(100% + 14px);
+    height: calc(100% + 14px);
+    transform: rotate(-90deg);
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .orb-ring circle {
+    fill: none;
+    stroke: rgb(var(--accent));
+    stroke-width: 0.9;
+    stroke-linecap: round;
+    stroke-dasharray: 100 101;
+    stroke-dashoffset: 100.5;
+    transition: stroke-dashoffset 0.35s var(--ease);
+  }
+
+  .label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    text-align: center;
+  }
+
+  .name {
+    font-family: var(--font-display);
+    font-size: 0.82rem;
+    font-weight: 400;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition: color 0.3s var(--ease);
+  }
+
+  .tagline {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--text-secondary-color);
+    text-wrap: balance;
+  }
+
+  /* Active state: hover or keyboard focus. */
+  .circle:is(:hover, :focus-visible) .orb-ring circle {
+    stroke-dashoffset: 0;
+    transition-duration: 0.9s;
+  }
+
+  .circle:is(:hover, :focus-visible) .disc {
+    box-shadow:
+      inset 0 0 0 1px rgb(var(--accent) / 0.5),
+      0 18px 40px -14px rgb(var(--accent) / 0.45);
+  }
+
+  .circle:is(:hover, :focus-visible) .disc :global(img) {
+    filter: none;
+    transform: scale(1.08);
+  }
+
+  .circle:is(:hover, :focus-visible) .name {
+    color: var(--accent-ink);
+  }
+
+  .circle:focus-visible .disc {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 14px;
+  }
+
+  .circle:active .orb {
+    transform: scale(0.96);
+    transition-duration: 0.15s;
+  }
+
+  /* Contact variant: inverted disc with orbiting text. */
+  .contact .disc {
+    background: transparent;
+    box-shadow: inset 0 0 0 1px rgb(var(--accent) / 0.55);
+    color: var(--accent-ink);
+  }
+
+  .contact:is(:hover, :focus-visible) .disc {
+    background: rgb(var(--accent));
+    color: var(--on-accent-color);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .orb {
+      transform: none;
+    }
+
+    .orb-ring circle {
+      transition-duration: 0.01s !important;
+      transition-delay: 0s !important;
+    }
+
+    .disc :global(img) {
+      transition: filter 0.3s linear;
+    }
+
+    .circle:is(:hover, :focus-visible) .disc :global(img) {
+      transform: none;
+    }
+  }
+</style>

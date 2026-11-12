@@ -1,8 +1,11 @@
 ---
 import Base from "@/layouts/Base.astro";
-import Card from "@/components/Card.astro";
 import Footer from "@/components/Footer.astro";
 import CompanyLogo from "@/components/CompanyLogo.astro";
+import CircleLink from "@/components/CircleLink.astro";
+import LatticeBackground from "@/components/LatticeBackground.astro";
+import {SITE_EMAIL} from "@/consts";
+import {PROJECTS} from "@/data/projects";
 import {
   getLocaleFromParams,
   getLocaleStaticPaths,
@@ -15,114 +18,285 @@ export function getStaticPaths() {
 
 const locale = getLocaleFromParams(Astro.params);
 const t = useTranslations(locale);
+
+const monogram = (name: string) =>
+  name
+    .split(/\s+/)
+    .map((word) => word[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
 ---
 
 <Base title={t.home.title} locale={locale}>
+  <LatticeBackground />
   <div class="page-wrapper">
     <main>
-      <CompanyLogo />
-      <h1>
-        <span class="text-gradient">FOUR RAYS</span>
-      </h1>
-      <p class="intro">
-        {t.home.intro.lead}
-        <em>{t.home.intro.emphasis}</em>
-        {t.home.intro.trail}
-      </p>
-      <ul role="list" class="link-card-grid">
-        <Card
-          href="/"
-          title={t.home.services.title}
-          body={t.home.services.body}
-        />
-        <Card
-          href="mailto:contact@4rays.net"
-          title={t.home.contact.title}
-          body={t.home.contact.body}
-        />
-      </ul>
+      <header class="hero">
+        <CompanyLogo />
+        <h1 class="wordmark">{t.site.title}</h1>
+        <p class="intro">
+          {t.home.intro.lead}
+          <em>{t.home.intro.emphasis}</em>
+          {t.home.intro.trail}
+        </p>
+      </header>
+
+      <section class="work" aria-labelledby="work-heading">
+        <h2 id="work-heading">{t.home.work.heading}</h2>
+        <ul role="list" class="circles">
+          {PROJECTS.map((project) => (
+            <CircleLink
+              href={project.href}
+              name={project.name}
+              tagline={t.home.projects[project.id].tagline}
+            >
+              {project.image ? (
+                <img
+                  src={project.image}
+                  alt=""
+                  width="256"
+                  height="256"
+                  loading="lazy"
+                />
+              ) : (
+                <span class="monogram" lang={project.markLang}>
+                  {project.mark ?? monogram(project.name)}
+                </span>
+              )}
+            </CircleLink>
+          ))}
+          <CircleLink
+            href={`mailto:${SITE_EMAIL}`}
+            name={t.home.contact.title}
+            tagline={SITE_EMAIL}
+            variant="contact"
+          >
+            <svg class="orbit-text" viewBox="0 0 100 100" aria-hidden="true">
+              <defs>
+                <path
+                  id="contact-orbit"
+                  d="M50,50 m-39,0 a39,39 0 1,1 78,0 a39,39 0 1,1 -78,0"
+                ></path>
+              </defs>
+              <text>
+                <textPath
+                  href="#contact-orbit"
+                  textLength="243"
+                  lengthAdjust="spacing"
+                >
+                  {t.home.contact.orbit}
+                </textPath>
+              </text>
+            </svg>
+            <svg class="mail-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3.5 6.5h17v11h-17z"></path>
+              <path d="m3.5 6.5 8.5 7 8.5-7"></path>
+            </svg>
+          </CircleLink>
+        </ul>
+      </section>
     </main>
     <Footer locale={locale} />
   </div>
 </Base>
 
-<style>
-  html {
-    font-family: system-ui, sans-serif;
-    background: var(--background-color);
+<script>
+  // Light up the lattice behind a circle when it is hovered or focused.
+  for (const link of document.querySelectorAll<HTMLAnchorElement>(
+    "[data-circle]"
+  )) {
+    const orb = link.querySelector<HTMLElement>(".orb");
+    if (!orb) continue;
+
+    const burst = () => {
+      const r = orb.getBoundingClientRect();
+      window.dispatchEvent(
+        new CustomEvent("rays:burst", {
+          detail: {x: r.left + r.width / 2, y: r.top + r.height / 2}
+        })
+      );
+    };
+
+    link.addEventListener("pointerenter", burst);
+    link.addEventListener("focus", burst);
   }
+</script>
+
+<style>
+  @custom-media --small-viewport (max-width: 38em);
 
   .page-wrapper {
+    position: relative;
+    z-index: 1;
     min-height: 100vh;
+    min-height: 100svh;
     display: flex;
     flex-direction: column;
   }
 
   main {
-    color: var(--text-primary-color);
+    flex: 1 0 auto;
     font-size: 1.2rem;
     line-height: 1.6;
-    flex: 1 0 auto;
   }
 
-  .text-gradient {
-    font-weight: 200;
-    margin-top: 0.5em;
-    display: block;
-  }
-
-  @keyframes outline {
-    0% {
-      stroke-dashoffset: 400;
-    }
-    50% {
-      stroke-dashoffset: 0;
-    }
-    100% {
-      stroke-dashoffset: 400;
-    }
-  }
-
-  h1 {
-    font-size: 1.8rem;
-    letter-spacing: 0.6rem;
-    font-weight: 100;
-    line-height: 1;
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-    margin-top: 0.67em;
-    margin-bottom: 3em;
+  }
+
+  .wordmark {
+    margin: 2.25rem 0 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 4.6vw, 2.4rem);
+    font-weight: 200;
+    letter-spacing: 0.42em;
+    /* Optical centring: trailing tracking would push the word left. */
+    margin-right: -0.42em;
+    line-height: 1;
+    text-transform: uppercase;
+    animation: rise 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
   }
 
   .intro {
-    border-radius: 8px;
-    border: 2px solid rgba(var(--accent), 25%);
-    color: rgba(var(--accent));
-    letter-spacing: 0.1rem;
-    margin-top: 1em;
-    margin-bottom: 2rem;
-    padding: 1.5rem 3rem;
-    text-align: center;
+    max-width: 32ch;
+    margin: 1.75rem 0 0;
+    font-size: clamp(1.1rem, 2.4vw, 1.35rem);
+    font-weight: 300;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+    color: var(--text-secondary-color);
+    text-wrap: balance;
+    animation: rise 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
 
     em {
+      font-style: normal;
+      color: var(--text-primary-color);
       text-decoration: underline;
-    }
-
-    @media (max-width: 38em) {
-      font-size: 1rem;
-      padding: 1rem;
+      text-decoration-color: rgb(var(--accent));
+      text-decoration-thickness: 1.5px;
+      text-underline-offset: 0.3em;
     }
   }
 
-  .intro a {
-    color: inherit;
-    text-decoration: underline;
+  .work {
+    margin-top: clamp(4.5rem, 12vw, 7rem);
   }
 
-  .link-card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(24ch, 1fr));
-    gap: 2rem;
-    margin-block: 1em;
+  .work h2 {
+    margin: 0 0 2.75rem;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 300;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--text-secondary-color);
+  }
+
+  .circles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3rem 2.5rem;
+    margin: 0;
     padding: 0;
+
+    @media (--small-viewport) {
+      gap: 2.5rem 0.5rem;
+    }
+  }
+
+  .monogram {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary-color);
+  }
+
+  .monogram:lang(ja) {
+    font-family:
+      "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", serif;
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    /* Optical centring: trailing tracking would push the mark left. */
+    margin-right: -0.06em;
+  }
+
+  .orbit-text {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+    font-family: var(--font-display);
+    font-size: 7.6px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    animation: orbit 28s linear infinite;
+  }
+
+  .mail-icon {
+    width: 2rem;
+    height: 2rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.4;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .orbit-text {
+    transition: rotate 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* `rotate` composes with the running `transform` spin, so it never jumps. */
+  :global(.contact:is(:hover, :focus-visible)) .orbit-text {
+    rotate: 120deg;
+  }
+
+  :global(.contact:is(:hover, :focus-visible)) .mail-icon {
+    transform: translateY(-2px) rotate(-8deg);
+  }
+
+  @keyframes orbit {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0.3;
+      transform: translateY(0.5rem);
+      filter: blur(5px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wordmark,
+    .intro {
+      animation: none;
+    }
+
+    .orbit-text {
+      animation: none;
+    }
+
+    /* Keep the colour change on hover, but no rotation or movement. */
+    :global(.contact:is(:hover, :focus-visible)) .orbit-text {
+      rotate: none;
+    }
+
+    :global(.contact:is(:hover, :focus-visible)) .mail-icon {
+      transform: none;
+    }
   }
 </style>

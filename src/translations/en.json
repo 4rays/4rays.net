@@ -10,13 +10,23 @@
       "emphasis": "digital products",
       "trail": "."
     },
-    "services": {
-      "title": "Services",
-      "body": "App development, agentic programming, AI strategy consulting."
+    "work": {
+      "heading": "What we're working on"
+    },
+    "projects": {
+      "circle": {
+        "tagline": "iOS Contractor"
+      },
+      "combolab": {
+        "tagline": "Creator"
+      },
+      "tba": {
+        "tagline": "Coming soon"
+      }
     },
     "contact": {
-      "title": "📮 Get in touch",
-      "body": "Have any questions or inquiries? I would love to hear from you."
+      "title": "Get in touch",
+      "orbit": "Say hello · Start a project ·"
     }
   },
   "footer": {
