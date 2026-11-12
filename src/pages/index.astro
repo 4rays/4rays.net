@@ -255,5 +255,14 @@ const monogram = (name: string) =>
     .orbit-text {
       animation: none;
     }
+
+    /* Keep the colour change on hover, but no rotation or movement. */
+    :global(.contact:is(:hover, :focus-visible)) .orbit-text {
+      rotate: none;
+    }
+
+    :global(.contact:is(:hover, :focus-visible)) .mail-icon {
+      transform: none;
+    }
   }
 </style>
