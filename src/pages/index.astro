@@ -69,9 +69,7 @@ const monogram = (name: string) =>
 </Base>
 
 <script>
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
-
+  // Light up the lattice behind a circle when it is hovered or focused.
   for (const link of document.querySelectorAll<HTMLAnchorElement>("[data-circle]")) {
     const orb = link.querySelector<HTMLElement>(".orb");
     if (!orb) continue;
@@ -87,21 +85,6 @@ const monogram = (name: string) =>
 
     link.addEventListener("pointerenter", burst);
     link.addEventListener("focus", burst);
-
-    // The disc leans a little toward the pointer.
-    link.addEventListener("pointermove", (event) => {
-      if (reducedMotion.matches || !finePointer.matches) return;
-      const r = orb.getBoundingClientRect();
-      const dx = (event.clientX - (r.left + r.width / 2)) / (r.width / 2);
-      const dy = (event.clientY - (r.top + r.height / 2)) / (r.height / 2);
-      orb.style.setProperty("--lean-x", `${Math.max(-1, Math.min(1, dx)) * 8}px`);
-      orb.style.setProperty("--lean-y", `${Math.max(-1, Math.min(1, dy)) * 8}px`);
-    });
-
-    link.addEventListener("pointerleave", () => {
-      orb.style.removeProperty("--lean-x");
-      orb.style.removeProperty("--lean-y");
-    });
   }
 </script>
 

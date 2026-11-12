@@ -1,8 +1,7 @@
 ---
 /**
  * A circular link. The disc content comes from the default slot.
- * Hover / focus: the ring traces itself in, four rays shoot out along the
- * lattice directions, and the disc leans toward the pointer.
+ * Hover / focus: the ring traces itself in and the image comes to full colour.
  */
 interface Props {
   href: string;
@@ -21,12 +20,6 @@ const { href, name, tagline, variant = "project" } = Astro.props;
       <svg class="ring" viewBox="0 0 100 100" aria-hidden="true">
         <circle cx="50" cy="50" r="49" pathLength="100"></circle>
       </svg>
-      <span class="rays" aria-hidden="true">
-        <i style="--angle: 180deg; --delay: 0ms"></i>
-        <i style="--angle: 240deg; --delay: 50ms"></i>
-        <i style="--angle: 300deg; --delay: 100ms"></i>
-        <i style="--angle: 0deg; --delay: 150ms"></i>
-      </span>
     </span>
     <span class="label">
       <span class="name">{name}</span>
@@ -62,8 +55,7 @@ const { href, name, tagline, variant = "project" } = Astro.props;
     position: relative;
     width: var(--size);
     height: var(--size);
-    transform: translate(var(--lean-x, 0px), var(--lean-y, 0px));
-    transition: transform 0.6s var(--ease);
+    transition: transform 0.3s var(--ease);
   }
 
   .disc {
@@ -113,20 +105,6 @@ const { href, name, tagline, variant = "project" } = Astro.props;
     transition: stroke-dashoffset 0.35s var(--ease);
   }
 
-  .rays i {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 1.1rem;
-    height: 1.5px;
-    margin-top: -0.75px;
-    border-radius: 1px;
-    background: rgb(var(--accent));
-    transform-origin: 0 50%;
-    transform: rotate(var(--angle)) translateX(calc(var(--size) / 2 + 12px)) scaleX(0);
-    transition: transform 0.25s var(--ease);
-  }
-
   .label {
     display: flex;
     flex-direction: column;
@@ -157,12 +135,6 @@ const { href, name, tagline, variant = "project" } = Astro.props;
     transition-duration: 0.9s;
   }
 
-  .circle:is(:hover, :focus-visible) .rays i {
-    transform: rotate(var(--angle)) translateX(calc(var(--size) / 2 + 12px)) scaleX(1);
-    transition-duration: 0.55s;
-    transition-delay: calc(var(--delay) + 0.15s);
-  }
-
   .circle:is(:hover, :focus-visible) .disc {
     box-shadow:
       inset 0 0 0 1px rgb(var(--accent) / 0.5),
@@ -184,7 +156,7 @@ const { href, name, tagline, variant = "project" } = Astro.props;
   }
 
   .circle:active .orb {
-    transform: translate(var(--lean-x, 0px), var(--lean-y, 0px)) scale(0.96);
+    transform: scale(0.96);
     transition-duration: 0.15s;
   }
 
@@ -205,8 +177,7 @@ const { href, name, tagline, variant = "project" } = Astro.props;
       transform: none;
     }
 
-    .ring circle,
-    .rays i {
+    .ring circle {
       transition-duration: 0.01s !important;
       transition-delay: 0s !important;
     }
