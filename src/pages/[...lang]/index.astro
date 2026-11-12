@@ -1,14 +1,23 @@
 ---
-import { changeLanguage } from "i18next";
-import Base from "@layouts/Base.astro";
-import Footer from "@components/Footer.astro";
-import CompanyLogo from "@components/CompanyLogo.astro";
-import CircleLink from "@components/CircleLink.astro";
-import LatticeBackground from "@components/LatticeBackground.astro";
-import { SITE_EMAIL } from "@consts";
-import { PROJECTS } from "../data/projects";
+import Base from "@/layouts/Base.astro";
+import Footer from "@/components/Footer.astro";
+import CompanyLogo from "@/components/CompanyLogo.astro";
+import CircleLink from "@/components/CircleLink.astro";
+import LatticeBackground from "@/components/LatticeBackground.astro";
+import {SITE_EMAIL} from "@/consts";
+import {PROJECTS} from "@/data/projects";
+import {
+  getLocaleFromParams,
+  getLocaleStaticPaths,
+  useTranslations
+} from "@/i18n/utils";
 
-changeLanguage("en");
+export function getStaticPaths() {
+  return getLocaleStaticPaths();
+}
+
+const locale = getLocaleFromParams(Astro.params);
+const t = useTranslations(locale);
 
 const monogram = (name: string) =>
   name
@@ -19,42 +28,64 @@ const monogram = (name: string) =>
     .toUpperCase();
 ---
 
-<Base title="Four Rays | Home">
+<Base title={t.home.title} locale={locale}>
   <LatticeBackground />
   <div class="page-wrapper">
     <main>
       <header class="hero">
         <CompanyLogo />
-        <h1 class="wordmark">Four Rays</h1>
+        <h1 class="wordmark">{t.site.title}</h1>
         <p class="intro">
-          We build cutting-edge, AI-native, human-friendly <em>digital products</em>.
+          {t.home.intro.lead}
+          <em>{t.home.intro.emphasis}</em>
+          {t.home.intro.trail}
         </p>
       </header>
 
       <section class="work" aria-labelledby="work-heading">
-        <h2 id="work-heading">What we're working on</h2>
+        <h2 id="work-heading">{t.home.work.heading}</h2>
         <ul role="list" class="circles">
-          {
-            PROJECTS.map((project) => (
-              <CircleLink href={project.href} name={project.name} tagline={project.tagline}>
-                {project.image ? (
-                  <img src={project.image} alt="" width="256" height="256" loading="lazy" />
-                ) : (
-                  <span class="monogram" lang={project.markLang}>
-                    {project.mark ?? monogram(project.name)}
-                  </span>
-                )}
-              </CircleLink>
-            ))
-          }
-          <CircleLink href={`mailto:${SITE_EMAIL}`} name="Get in touch" tagline={SITE_EMAIL} variant="contact">
+          {PROJECTS.map((project) => (
+            <CircleLink
+              href={project.href}
+              name={project.name}
+              tagline={t.home.projects[project.id].tagline}
+            >
+              {project.image ? (
+                <img
+                  src={project.image}
+                  alt=""
+                  width="256"
+                  height="256"
+                  loading="lazy"
+                />
+              ) : (
+                <span class="monogram" lang={project.markLang}>
+                  {project.mark ?? monogram(project.name)}
+                </span>
+              )}
+            </CircleLink>
+          ))}
+          <CircleLink
+            href={`mailto:${SITE_EMAIL}`}
+            name={t.home.contact.title}
+            tagline={SITE_EMAIL}
+            variant="contact"
+          >
             <svg class="orbit-text" viewBox="0 0 100 100" aria-hidden="true">
               <defs>
-                <path id="contact-orbit" d="M50,50 m-39,0 a39,39 0 1,1 78,0 a39,39 0 1,1 -78,0"></path>
+                <path
+                  id="contact-orbit"
+                  d="M50,50 m-39,0 a39,39 0 1,1 78,0 a39,39 0 1,1 -78,0"
+                ></path>
               </defs>
               <text>
-                <textPath href="#contact-orbit" textLength="243" lengthAdjust="spacing">
-                  Say hello · Start a project ·
+                <textPath
+                  href="#contact-orbit"
+                  textLength="243"
+                  lengthAdjust="spacing"
+                >
+                  {t.home.contact.orbit}
                 </textPath>
               </text>
             </svg>
@@ -66,13 +97,15 @@ const monogram = (name: string) =>
         </ul>
       </section>
     </main>
-    <Footer />
+    <Footer locale={locale} />
   </div>
 </Base>
 
 <script>
   // Light up the lattice behind a circle when it is hovered or focused.
-  for (const link of document.querySelectorAll<HTMLAnchorElement>("[data-circle]")) {
+  for (const link of document.querySelectorAll<HTMLAnchorElement>(
+    "[data-circle]"
+  )) {
     const orb = link.querySelector<HTMLElement>(".orb");
     if (!orb) continue;
 
@@ -80,8 +113,8 @@ const monogram = (name: string) =>
       const r = orb.getBoundingClientRect();
       window.dispatchEvent(
         new CustomEvent("rays:burst", {
-          detail: { x: r.left + r.width / 2, y: r.top + r.height / 2 },
-        }),
+          detail: {x: r.left + r.width / 2, y: r.top + r.height / 2}
+        })
       );
     };
 
@@ -186,7 +219,8 @@ const monogram = (name: string) =>
   }
 
   .monogram:lang(ja) {
-    font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", serif;
+    font-family:
+      "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", serif;
     font-size: 2rem;
     font-weight: 600;
     letter-spacing: 0.06em;

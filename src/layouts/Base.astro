@@ -1,25 +1,33 @@
 ---
-import {SITE_TITLE, SITE_DESCRIPTION} from "@consts";
+import type {Locale} from "@/i18n/constants";
+import {useTranslations} from "@/i18n/utils";
+import "@/styles.css";
 
 interface Props {
   title?: string;
   description?: string;
   previewImage?: string;
+  locale: Locale;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
+const {locale} = Astro.props;
+const t = useTranslations(locale);
+
 let {
-  title = SITE_TITLE, 
-  description = SITE_DESCRIPTION,
-  previewImage,
+  title = t.site.title,
+  description = t.site.description,
+  previewImage
 } = Astro.props;
 
-const previewImageURL = previewImage ? new URL(previewImage, Astro.site) : undefined;
+const previewImageURL = previewImage
+  ? new URL(previewImage, Astro.site)
+  : undefined;
 ---
 
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang={locale}>
   <head>
     <meta charset="utf-8" />
     <meta
@@ -59,7 +67,7 @@ const previewImageURL = previewImage ? new URL(previewImage, Astro.site) : undef
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
-    
+
     <!-- Additional Meta Tags -->
     <slot name="head" />
 
@@ -69,9 +77,7 @@ const previewImageURL = previewImage ? new URL(previewImage, Astro.site) : undef
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
 
-    {previewImageURL && (
-      <meta property="og:image" content={previewImageURL} />
-    )}
+    {previewImageURL && <meta property="og:image" content={previewImageURL} />}
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
@@ -86,7 +92,8 @@ const previewImageURL = previewImage ? new URL(previewImage, Astro.site) : undef
 <style is:global>
   @font-face {
     font-family: "Unbounded";
-    src: url("/fonts/unbounded-latin-wght-normal.woff2") format("woff2-variations");
+    src: url("/fonts/unbounded-latin-wght-normal.woff2")
+      format("woff2-variations");
     font-weight: 200 900;
     font-style: normal;
     font-display: swap;
@@ -95,7 +102,8 @@ const previewImageURL = previewImage ? new URL(previewImage, Astro.site) : undef
   :root {
     color-scheme: dark light;
     --font-display: "Unbounded", system-ui, sans-serif;
-    --font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --font-body:
+      system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
     --accent: 237 103 44;
     --accent-ink: rgb(244 128 76);
@@ -153,6 +161,7 @@ const previewImageURL = previewImage ? new URL(previewImage, Astro.site) : undef
   }
 
   main {
+    box-sizing: content-box;
     margin: auto;
     padding: 1rem;
     width: 56rem;

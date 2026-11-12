@@ -1,4 +1,10 @@
+import type {Translations} from "@/i18n/constants";
+
+export type ProjectId = keyof Translations["home"]["projects"];
+
 export interface Project {
+  /** Key for the project's copy in the translations (`home.projects.<id>`). */
+  id: ProjectId;
   name: string;
   /** Leave out for projects that are not public yet; the circle is then not a link. */
   href?: string;
@@ -8,26 +14,25 @@ export interface Project {
   mark?: string;
   /** Language of `mark`, for correct glyphs and pronunciation. */
   markLang?: string;
-  tagline?: string;
 }
 
 export const PROJECTS: Project[] = [
   {
+    id: "circle",
     name: "Circle",
     href: "https://circle.so",
-    image: "/projects/circle.png",
-    tagline: "iOS Contractor",
+    image: "/projects/circle.png"
   },
   {
+    id: "combolab",
     name: "Combolab",
     href: "https://combolab.app",
-    image: "/projects/combolab.png",
-    tagline: "Creator",
+    image: "/projects/combolab.png"
   },
   {
+    id: "tba",
     name: "TBA",
     mark: "極秘",
-    markLang: "ja",
-    tagline: "Coming soon",
-  },
+    markLang: "ja"
+  }
 ];

@@ -1,20 +1,32 @@
 ---
-const today = new Date();
+import type {Locale} from "@/i18n/constants";
+import {useTranslations} from "@/i18n/utils";
+
+interface Props {
+  locale: Locale;
+}
+
+const {locale} = Astro.props;
+const t = useTranslations(locale);
+const year = new Date().getFullYear();
 ---
 
 <footer>
-  <p>
-    &copy; 2020-{today.getFullYear()} Four Rays AB. Made with 🍵 in Stockholm.
-  </p>
+  <p>{t.footer.copyright.replace("{year}", String(year))}</p>
 </footer>
 
 <style>
   footer {
     padding: 5rem 1rem 2rem;
-    letter-spacing: .1em;
+    letter-spacing: 0.1em;
     text-align: center;
     font-size: 0.8rem;
     color: var(--text-primary-color);
     opacity: 0.8;
+  }
+
+  footer p {
+    margin-block: 1em;
+    line-height: normal;
   }
 </style>

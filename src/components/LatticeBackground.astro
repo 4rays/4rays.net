@@ -56,7 +56,7 @@
   let viewH = 0;
   let docH = 0;
 
-  let colors = { base: "" };
+  let colors = {base: ""};
 
   // Line colours step from their own colour (sides) to calm grey (centre).
   const CALM_STEPS = 10;
@@ -69,22 +69,35 @@
   let ambientAlpha = 0.3;
 
   function triplet(value: string, fallback: number[]) {
-    const parts = value.trim().split(/[\s,]+/).map(Number);
-    return parts.length === 3 && parts.every((n) => Number.isFinite(n)) ? parts : fallback;
+    const parts = value
+      .trim()
+      .split(/[\s,]+/)
+      .map(Number);
+    return parts.length === 3 && parts.every((n) => Number.isFinite(n))
+      ? parts
+      : fallback;
   }
 
   function readColors() {
     const style = getComputedStyle(document.documentElement);
     colors = {
-      base: style.getPropertyValue("--lattice-base").trim() || "rgba(255,255,255,0.05)",
+      base:
+        style.getPropertyValue("--lattice-base").trim() ||
+        "rgba(255,255,255,0.05)"
     };
     const accent = triplet(style.getPropertyValue("--accent"), [237, 103, 44]);
-    const ambientColor = triplet(style.getPropertyValue("--lattice-ambient"), [240, 248, 255]);
-    const grey = triplet(style.getPropertyValue("--lattice-calm"), [200, 206, 214]);
+    const ambientColor = triplet(
+      style.getPropertyValue("--lattice-ambient"),
+      [240, 248, 255]
+    );
+    const grey = triplet(
+      style.getPropertyValue("--lattice-calm"),
+      [200, 206, 214]
+    );
     const alpha = parseFloat(style.getPropertyValue("--lattice-ambient-alpha"));
     ambientAlpha = Number.isFinite(alpha) ? alpha : 0.3;
     const palette = (from: number[]) =>
-      Array.from({ length: CALM_STEPS }, (_, step) => {
+      Array.from({length: CALM_STEPS}, (_, step) => {
         const t = step / (CALM_STEPS - 1);
         const mix = from.map((a, n) => Math.round(a + (grey[n] - a) * t));
         return `rgb(${mix.join(" ")})`;
@@ -116,12 +129,12 @@
   function anchor() {
     // Align a lattice node with the centre of the logo.
     const logo = document.querySelector(".logo");
-    if (!logo) return { x: viewW / 2, y: 200 };
+    if (!logo) return {x: viewW / 2, y: 200};
     const r = logo.getBoundingClientRect();
-    return { x: r.left + r.width / 2, y: r.top + window.scrollY + r.height / 2 };
+    return {x: r.left + r.width / 2, y: r.top + window.scrollY + r.height / 2};
   }
 
-  let anchorPoint = { x: 0, y: 0 };
+  let anchorPoint = {x: 0, y: 0};
 
   function build() {
     dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -164,7 +177,7 @@
 
     const node = (i: number, j: number) => ({
       x: originX + i * SIDE + (j % 2 ? SIDE / 2 : 0),
-      y: originY + j * ROW_H,
+      y: originY + j * ROW_H
     });
 
     for (let j = 0; j < rows; j++) {
@@ -187,7 +200,8 @@
           period[e] = 7 + hash(k, j, i) * 9;
           const mid = Math.abs((x1[e] + x2[e]) / 2 - centerX);
           calm[e] = 1 - smoothstep(greyHalf, colorHalf, mid);
-          quiet[e] = CORE_ALPHA + (1 - CORE_ALPHA) * smoothstep(0, coreHalf, mid);
+          quiet[e] =
+            CORE_ALPHA + (1 - CORE_ALPHA) * smoothstep(0, coreHalf, mid);
         }
       }
     }
@@ -202,8 +216,14 @@
   /** Add energy to edges near (x, y) in document coordinates. */
   function energize(x: number, y: number, radius: number, strength: number) {
     const [jFrom, jTo] = rowRange(y - radius, y + radius);
-    const cFrom = Math.max(0, Math.floor((x - radius - originX) / SIDE) - iMin - 1);
-    const cTo = Math.min(cols - 1, Math.ceil((x + radius - originX) / SIDE) - iMin + 1);
+    const cFrom = Math.max(
+      0,
+      Math.floor((x - radius - originX) / SIDE) - iMin - 1
+    );
+    const cTo = Math.min(
+      cols - 1,
+      Math.ceil((x + radius - originX) / SIDE) - iMin + 1
+    );
     for (let j = jFrom; j <= jTo; j++) {
       for (let c = cFrom; c <= cTo; c++) {
         for (let k = 0; k < 3; k++) {
@@ -219,7 +239,10 @@
             // Fresh edge: draw it in from the end nearest the source.
             drawT[e] = 0;
             flip[e] =
-              Math.hypot(x2[e] - x, y2[e] - y) < Math.hypot(x1[e] - x, y1[e] - y) ? 1 : 0;
+              Math.hypot(x2[e] - x, y2[e] - y) <
+              Math.hypot(x1[e] - x, y1[e] - y)
+                ? 1
+                : 0;
           }
           energy[e] = value;
           active.add(e);
@@ -228,7 +251,13 @@
     }
   }
 
-  function energizePath(ax: number, ay: number, bx: number, by: number, strength: number) {
+  function energizePath(
+    ax: number,
+    ay: number,
+    bx: number,
+    by: number,
+    strength: number
+  ) {
     const steps = Math.max(1, Math.ceil(Math.hypot(bx - ax, by - ay) / 14));
     for (let s = 1; s <= steps; s++) {
       const t = s / steps;
@@ -248,9 +277,9 @@
   }
 
   // Pointer + idle ghost state, in document coordinates.
-  let pointer: { x: number; y: number } | null = null;
+  let pointer: {x: number; y: number} | null = null;
   let lastPointerAt = -Infinity;
-  let ghost: { x: number; y: number } | null = null;
+  let ghost: {x: number; y: number} | null = null;
   let start = performance.now();
   let last = start;
   const WAVE_SPEED = 900;
@@ -273,7 +302,7 @@
             const e = (j * cols + c) * 3 + k;
             const d = Math.hypot(
               (x1[e] + x2[e]) / 2 - anchorPoint.x,
-              (y1[e] + y2[e]) / 2 - anchorPoint.y,
+              (y1[e] + y2[e]) / 2 - anchorPoint.y
             );
             const lag = waveR - d;
             if (lag < 0 || lag > WAVE_WIDTH) continue;
@@ -300,7 +329,7 @@
     if (now - lastPointerAt > IDLE_MS) {
       const g = {
         x: viewW * (0.5 + 0.42 * Math.sin(time * 0.23)),
-        y: scrollY + viewH * (0.5 + 0.4 * Math.sin(time * 0.31 + 1.3)),
+        y: scrollY + viewH * (0.5 + 0.4 * Math.sin(time * 0.31 + 1.3))
       };
       if (ghost) energizePath(ghost.x, ghost.y, g.x, g.y, 0.4);
       ghost = g;
@@ -430,7 +459,7 @@
   }
 
   function toDoc(e: PointerEvent) {
-    return { x: e.clientX, y: e.clientY + window.scrollY };
+    return {x: e.clientX, y: e.clientY + window.scrollY};
   }
 
   window.addEventListener(
@@ -446,7 +475,7 @@
       pointer = p;
       lastPointerAt = performance.now();
     },
-    { passive: true },
+    {passive: true}
   );
 
   window.addEventListener(
@@ -458,12 +487,12 @@
       pointer = p;
       lastPointerAt = performance.now();
     },
-    { passive: true },
+    {passive: true}
   );
 
   window.addEventListener("rays:burst", (event) => {
     if (reducedMotion.matches) return;
-    const { x, y } = (event as CustomEvent<{ x: number; y: number }>).detail;
+    const {x, y} = (event as CustomEvent<{x: number; y: number}>).detail;
     energize(x, y + window.scrollY, TRAIL_RADIUS * 1.5, 1);
   });
 
@@ -472,7 +501,7 @@
     () => {
       if (reducedMotion.matches) drawStatic();
     },
-    { passive: true },
+    {passive: true}
   );
 
   let resizeTimer = 0;
