@@ -47,7 +47,8 @@ pnpm astro [command]  # Run any Astro CLI command
 
 - `src/pages/` - Page routes (currently minimal)
 - `src/layouts/` - Reusable layout components (Base, Legal)
-- `src/components/` - UI components (Card, CompanyLogo, Footer)
+- `src/components/` - UI components (CircleLink, CompanyLogo, Footer, LatticeBackground)
+- `src/data/projects.ts` - Project circles shown on the home page
 - `src/consts.ts` - Site-wide constants (title, description, author info)
 - `public/locales/` - i18n translation files
 - `astro.config.mjs` - Astro configuration

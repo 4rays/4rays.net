@@ -84,28 +84,78 @@ const previewImageURL = previewImage ? new URL(previewImage, Astro.site) : undef
   </body>
 </html>
 <style is:global>
+  @font-face {
+    font-family: "Unbounded";
+    src: url("/fonts/unbounded-latin-wght-normal.woff2") format("woff2-variations");
+    font-weight: 200 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
   :root {
-    --accent: 237, 103, 44;
+    color-scheme: dark light;
+    --font-display: "Unbounded", system-ui, sans-serif;
+    --font-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+    --accent: 237 103 44;
+    --accent-ink: rgb(244 128 76);
+    --on-accent-color: #13151a;
     --background-color: #13151a;
-    --card-color: #23262d;
-    --text-primary-color: #fff;
+    --card-color: #1d2027;
+    --hairline: rgb(255 255 255 / 0.1);
+    --text-primary-color: #f2f5f8;
+    --text-secondary-color: rgb(242 245 248 / 0.66);
     --logo-color: aliceblue;
+
+    --lattice-base: rgb(240 248 255 / 0.045);
+    --lattice-ambient: 240 248 255;
+    --lattice-ambient-alpha: 0.3;
+    --lattice-calm: 200 206 214;
   }
 
   @media (prefers-color-scheme: light) {
     :root {
-      --accent: 237, 103, 44;
-      --background-color: #fff;
-      --card-color: aliceblue;
-      --text-primary-color: #23262d;
+      --accent-ink: rgb(184 66 16);
+      --background-color: #fbfaf8;
+      --card-color: #fff;
+      --hairline: rgb(35 38 45 / 0.12);
+      --text-primary-color: #1d2027;
+      --text-secondary-color: rgb(29 32 39 / 0.68);
       --logo-color: #e6440e;
+
+      --lattice-base: rgb(35 38 45 / 0.06);
+      --lattice-ambient: 230 68 14;
+      --lattice-ambient-alpha: 0.32;
+      --lattice-calm: 150 156 166;
     }
+  }
+
+  html {
+    background: var(--background-color);
+    color: var(--text-primary-color);
+    font-family: var(--font-body);
+    scrollbar-color: rgb(var(--accent) / 0.5) transparent;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  ::selection {
+    background: rgb(var(--accent));
+    color: var(--on-accent-color);
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 4px;
   }
 
   main {
     margin: auto;
     padding: 1rem;
-    width: 50rem;
+    width: 56rem;
     max-width: calc(100% - 2rem);
   }
 </style>
