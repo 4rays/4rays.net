@@ -3,12 +3,14 @@
 
 <script is:inline>
   function getThemePreference() {
-    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+    try {
       const storedTheme = localStorage.getItem("theme");
       // Ignore anything outside the known values.
       if (["light", "dark", "system"].includes(storedTheme)) {
         return storedTheme;
       }
+    } catch {
+      // Storage can be unavailable (blocked by policy); follow the system scheme.
     }
 
     return "system";
@@ -26,11 +28,12 @@
   // Set the theme class before first paint so the page never flashes.
   applyTheme(getThemePreference());
 
-  // Follow live system-scheme changes while no theme is stored.
+  // Follow live system-scheme changes whenever the resolved preference is
+  // system: no stored theme, a stored "system", or an invalid stored value.
   window
     .matchMedia("(prefers-color-scheme: dark)")
     .addEventListener("change", () => {
-      if (!localStorage.getItem("theme")) {
+      if (getThemePreference() === "system") {
         applyTheme("system");
       }
     });
