@@ -1,0 +1,37 @@
+---
+---
+
+<script is:inline>
+  function getThemePreference() {
+    if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+      const storedTheme = localStorage.getItem("theme");
+      // Ignore anything outside the known values.
+      if (["light", "dark", "system"].includes(storedTheme)) {
+        return storedTheme;
+      }
+    }
+
+    return "system";
+  }
+
+  function applyTheme(theme) {
+    const isDark =
+      theme === "dark" ||
+      (theme === "system" &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+    document.documentElement.classList[isDark ? "add" : "remove"]("dark");
+  }
+
+  // Set the theme class before first paint so the page never flashes.
+  applyTheme(getThemePreference());
+
+  // Follow live system-scheme changes while no theme is stored.
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", () => {
+      if (!localStorage.getItem("theme")) {
+        applyTheme("system");
+      }
+    });
+</script>

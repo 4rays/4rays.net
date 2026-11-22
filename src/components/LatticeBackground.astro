@@ -26,7 +26,6 @@
   const canvas = document.querySelector<HTMLCanvasElement>("canvas.lattice")!;
   const ctx = canvas.getContext("2d")!;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-  const darkScheme = window.matchMedia("(prefers-color-scheme: dark)");
 
   // Lattice storage. Edges live in rows; each node owns three edges:
   // 0 = horizontal right, 1 = down-left, 2 = down-right.
@@ -85,7 +84,10 @@
         style.getPropertyValue("--lattice-base").trim() ||
         "rgba(255,255,255,0.05)"
     };
-    const accent = triplet(style.getPropertyValue("--accent"), [237, 103, 44]);
+    const accent = triplet(
+      style.getPropertyValue("--lattice-accent"),
+      [237, 103, 44]
+    );
     const ambientColor = triplet(
       style.getPropertyValue("--lattice-ambient"),
       [240, 248, 255]
@@ -523,7 +525,11 @@
     readColors();
     if (reducedMotion.matches) drawStatic();
   };
-  darkScheme.addEventListener("change", onScheme);
+  // SetTheme flips the .dark class on <html>; re-read the tokens on change.
+  new MutationObserver(onScheme).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["class"]
+  });
   reducedMotion.addEventListener("change", run);
 
   readColors();
