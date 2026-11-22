@@ -101,18 +101,15 @@ const Tag = href ? "a" : "div";
     pointer-events: none;
   }
 
-  /* The colour copy fades in over the tint as a matching grayscale first,
-     then un-grays to full colour, so the transition never mixes the tint
-     hue with the artwork hue. */
+  /* The colour copy fades straight in over the static tint, so WebKit
+     never recomposites the blend group during the transition. */
   .disc :global(img.reveal) {
     position: absolute;
     inset: 0;
     z-index: 1;
     opacity: 0;
-    filter: grayscale(1);
     transition:
-      opacity 0.5s var(--ease) 0.4s,
-      filter 0.4s var(--ease),
+      opacity 0.5s var(--ease),
       transform 0.7s var(--ease);
   }
 
@@ -174,12 +171,7 @@ const Tag = href ? "a" : "div";
 
   .circle:is(:hover, :focus-visible) .disc :global(img.reveal) {
     opacity: 1;
-    filter: none;
     transform: scale(1.08);
-    transition:
-      opacity 0.5s var(--ease),
-      filter 0.4s var(--ease) 0.5s,
-      transform 0.7s var(--ease);
   }
 
   .circle:is(:hover, :focus-visible) .name {
@@ -221,17 +213,12 @@ const Tag = href ? "a" : "div";
 
     .disc :global(img.reveal) {
       transition:
-        opacity 0.3s linear 0.3s,
-        filter 0.3s linear,
+        opacity 0.3s linear,
         transform 0.01s linear;
     }
 
     .circle:is(:hover, :focus-visible) .disc :global(img.reveal) {
       transform: none;
-      transition:
-        opacity 0.3s linear,
-        filter 0.3s linear 0.3s,
-        transform 0.01s linear;
     }
   }
 </style>
