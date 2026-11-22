@@ -36,7 +36,7 @@ Mirror of Tasker project `4rays-net`. Do the items in order: each is one focused
   - Leave a CLAUDE.md that contains only @AGENTS.md.
   - Acceptance: every path and command named in AGENTS.md exists or runs; CLAUDE.md contains only the import line; pnpm format:check passes.
 
-- [ ] Remove the unused Legal layout so AGENTS.md is accurate (Tasker #535) (Goal 00f314685a5c)
+- [x] Remove the unused Legal layout so AGENTS.md is accurate (Tasker #535) (Goal 00f314685a5c)
       Criterion C3. Found while checking AGENTS.md after #518 merged.
       Gap: AGENTS.md says src/layouts/Base.astro is "the only layout", but src/layouts/Legal.astro still exists. Nothing imports it (`rg Legal src` matches only the file itself); its legal pages were removed and the site is single-page by convention.
       Scope: delete src/layouts/Legal.astro. Do not change AGENTS.md, styles.css, package.json, or any other file. The @tailwindcss/typography plugin stays for this task.
