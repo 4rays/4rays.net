@@ -36,6 +36,12 @@ Mirror of Tasker project `4rays-net`. Do the items in order: each is one focused
   - Leave a CLAUDE.md that contains only @AGENTS.md.
   - Acceptance: every path and command named in AGENTS.md exists or runs; CLAUDE.md contains only the import line; pnpm format:check passes.
 
+- [ ] Remove the unused Legal layout so AGENTS.md is accurate (Tasker #535) (Goal 00f314685a5c)
+      Criterion C3. Found while checking AGENTS.md after #518 merged.
+      Gap: AGENTS.md says src/layouts/Base.astro is "the only layout", but src/layouts/Legal.astro still exists. Nothing imports it (`rg Legal src` matches only the file itself); its legal pages were removed and the site is single-page by convention.
+      Scope: delete src/layouts/Legal.astro. Do not change AGENTS.md, styles.css, package.json, or any other file. The @tailwindcss/typography plugin stays for this task.
+      Acceptance: `ls src/layouts` lists only Base.astro; `rg Legal src` is empty; every path named in AGENTS.md exists; pnpm check, pnpm format:check and pnpm build pass, and dist/index.html is unchanged apart from asset hashes.
+
 ### Deferred (needs owner input, not ready)
 
 - Japanese locale: add `ja` to `locales` with `src/translations/ja.json`, the root-path client-side language redirect (`src/scripts/language-detection.js` with a `preferred_lang` cookie), and a language picker. Blocked on Japanese copy from the owner.
