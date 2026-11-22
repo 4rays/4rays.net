@@ -18,19 +18,3 @@ const {title, description} = Astro.props.frontmatter || Astro.props;
     <slot />
   </main>
 </Base>
-
-<style>
-  :root {
-    --background-color: #1e1f22;
-  }
-
-  @media (prefers-color-scheme: light) {
-    :root {
-      --background-color: #fff;
-    }
-  }
-
-  html {
-    background-color: var(--background-color);
-  }
-</style>

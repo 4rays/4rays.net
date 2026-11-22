@@ -1,6 +1,7 @@
 ---
 import type {Locale} from "@/i18n/constants";
 import {useTranslations} from "@/i18n/utils";
+import SetTheme from "@/components/SetTheme.astro";
 import "@/styles.css";
 
 interface Props {
@@ -29,11 +30,13 @@ const previewImageURL = previewImage
 <!doctype html>
 <html lang={locale}>
   <head>
+    <SetTheme />
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
+    <meta name="color-scheme" content="light dark" />
 
     <!-- Icons -->
     <!-- <link
@@ -107,65 +110,12 @@ const previewImageURL = previewImage
     font-display: swap;
   }
 
+  /* Color tokens live in src/styles.css; this block keeps only the fonts
+     and the reading-column layout. */
   :root {
-    color-scheme: dark light;
     --font-display: "Unbounded", system-ui, sans-serif;
     --font-body:
       system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-
-    --accent: 237 103 44;
-    --accent-ink: rgb(244 128 76);
-    --on-accent-color: #13151a;
-    --background-color: #13151a;
-    --card-color: #1d2027;
-    --hairline: rgb(255 255 255 / 0.1);
-    --text-primary-color: #f2f5f8;
-    --text-secondary-color: rgb(242 245 248 / 0.66);
-    --logo-color: aliceblue;
-
-    --lattice-base: rgb(240 248 255 / 0.045);
-    --lattice-ambient: 240 248 255;
-    --lattice-ambient-alpha: 0.3;
-    --lattice-calm: 200 206 214;
-  }
-
-  @media (prefers-color-scheme: light) {
-    :root {
-      --accent-ink: rgb(184 66 16);
-      --background-color: #fbfaf8;
-      --card-color: #fff;
-      --hairline: rgb(35 38 45 / 0.12);
-      --text-primary-color: #1d2027;
-      --text-secondary-color: rgb(29 32 39 / 0.68);
-      --logo-color: #e6440e;
-
-      --lattice-base: rgb(35 38 45 / 0.06);
-      --lattice-ambient: 230 68 14;
-      --lattice-ambient-alpha: 0.32;
-      --lattice-calm: 150 156 166;
-    }
-  }
-
-  html {
-    background: var(--background-color);
-    color: var(--text-primary-color);
-    font-family: var(--font-body);
-    scrollbar-color: rgb(var(--accent) / 0.5) transparent;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  body {
-    margin: 0;
-  }
-
-  ::selection {
-    background: rgb(var(--accent));
-    color: var(--on-accent-color);
-  }
-
-  :focus-visible {
-    outline: 2px solid rgb(var(--accent));
-    outline-offset: 4px;
   }
 
   main {

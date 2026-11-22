@@ -45,7 +45,7 @@ const Tag = href ? "a" : "div";
     align-items: center;
     gap: 1.1rem;
     width: calc(var(--size) + 2rem);
-    color: var(--text-primary-color);
+    color: var(--foreground);
     text-decoration: none;
     outline: none;
 
@@ -69,9 +69,9 @@ const Tag = href ? "a" : "div";
     place-items: center;
     overflow: hidden;
     border-radius: 50%;
-    background: var(--card-color);
+    background: var(--card);
     box-shadow:
-      inset 0 0 0 1px var(--hairline),
+      inset 0 0 0 1px var(--border),
       0 10px 30px -12px rgb(0 0 0 / 0.45);
     transition:
       box-shadow 0.5s var(--ease),
@@ -101,7 +101,7 @@ const Tag = href ? "a" : "div";
 
   .orb-ring circle {
     fill: none;
-    stroke: rgb(var(--accent));
+    stroke: var(--accent);
     stroke-width: 0.9;
     stroke-linecap: round;
     stroke-dasharray: 100 101;
@@ -129,7 +129,7 @@ const Tag = href ? "a" : "div";
   .tagline {
     font-size: 0.85rem;
     line-height: 1.4;
-    color: var(--text-secondary-color);
+    color: var(--muted-foreground);
     text-wrap: balance;
   }
 
@@ -141,8 +141,8 @@ const Tag = href ? "a" : "div";
 
   .circle:is(:hover, :focus-visible) .disc {
     box-shadow:
-      inset 0 0 0 1px rgb(var(--accent) / 0.5),
-      0 18px 40px -14px rgb(var(--accent) / 0.45);
+      inset 0 0 0 1px color-mix(in oklab, var(--accent) 50%, transparent),
+      0 18px 40px -14px color-mix(in oklab, var(--accent) 45%, transparent);
   }
 
   .circle:is(:hover, :focus-visible) .disc :global(img) {
@@ -155,7 +155,7 @@ const Tag = href ? "a" : "div";
   }
 
   .circle:focus-visible .disc {
-    outline: 2px solid rgb(var(--accent));
+    outline: 2px solid var(--accent);
     outline-offset: 14px;
   }
 
@@ -167,13 +167,14 @@ const Tag = href ? "a" : "div";
   /* Contact variant: inverted disc with orbiting text. */
   .contact .disc {
     background: transparent;
-    box-shadow: inset 0 0 0 1px rgb(var(--accent) / 0.55);
+    box-shadow: inset 0 0 0 1px
+      color-mix(in oklab, var(--accent) 55%, transparent);
     color: var(--accent-ink);
   }
 
   .contact:is(:hover, :focus-visible) .disc {
-    background: rgb(var(--accent));
-    color: var(--on-accent-color);
+    background: var(--accent);
+    color: var(--accent-foreground);
   }
 
   @media (prefers-reduced-motion: reduce) {

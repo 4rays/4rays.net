@@ -1,3 +1,87 @@
 @import "tailwindcss";
 
 @plugin "@tailwindcss/typography";
+
+@variant dark (&:where(.dark, .dark *));
+
+/* Semantic color tokens. Light is the default; the SetTheme inline script in
+   Base.astro decides before first paint whether `html` carries the `.dark`
+   class (stored theme, else the system scheme). */
+:root {
+  color-scheme: light;
+
+  --background: #fbfaf8;
+  --foreground: #1d2027;
+  --card: #fff;
+  --muted-foreground: rgb(29 32 39 / 0.68);
+  --border: rgb(35 38 45 / 0.12);
+  --accent: rgb(237 103 44);
+  --accent-foreground: #13151a;
+  --accent-ink: rgb(184 66 16);
+  --logo: #e6440e;
+
+  /* Canvas inputs for LatticeBackground: a full color for the base grid and
+     RGB triplets for the colors it mixes itself. */
+  --lattice-base: rgb(35 38 45 / 0.06);
+  --lattice-accent: 237 103 44;
+  --lattice-ambient: 230 68 14;
+  --lattice-ambient-alpha: 0.32;
+  --lattice-calm: 150 156 166;
+}
+
+.dark {
+  color-scheme: dark;
+
+  --background: #13151a;
+  --foreground: #f2f5f8;
+  --card: #1d2027;
+  --muted-foreground: rgb(242 245 248 / 0.66);
+  --border: rgb(255 255 255 / 0.1);
+  --accent: rgb(237 103 44);
+  --accent-foreground: #13151a;
+  --accent-ink: rgb(244 128 76);
+  --logo: aliceblue;
+
+  --lattice-base: rgb(240 248 255 / 0.045);
+  --lattice-accent: 237 103 44;
+  --lattice-ambient: 240 248 255;
+  --lattice-ambient-alpha: 0.3;
+  --lattice-calm: 200 206 214;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-ink: var(--accent-ink);
+  --color-logo: var(--logo);
+}
+
+@layer base {
+  html {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-body);
+    scrollbar-color: color-mix(in oklab, var(--accent) 50%, transparent)
+      transparent;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    margin: 0;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+  }
+}
