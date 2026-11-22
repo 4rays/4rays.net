@@ -9,7 +9,7 @@
 
 Mirror of Tasker project `4rays-net`. One focused PR. Validate with `pnpm check`, `pnpm format:check`, and `pnpm build`, and check the page in a browser in light and dark.
 
-- [ ] Tint the project circle icons orange at rest (Tasker #543) (Goal 6a952708a8fb)
+- [x] Tint the project circle icons orange at rest (Tasker #543) (Goal 6a952708a8fb)
       Criteria C1 and C2. Verified against 3e3a1e9.
       Gap: src/components/CircleLink.astro sets `.disc :global(img) { filter: grayscale(1) contrast(1.05); }`, so the Circle and Combolab images are grayscale at rest and reveal full colour on hover/focus. The non-interactive TBA circle shows the mark 極秘 in `.monogram` (src/pages/[...lang]/index.astro) in var(--muted-foreground), which is gray.
       Scope:
