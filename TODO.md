@@ -5,6 +5,21 @@
 - [ ] Add analytics https://4rays.goatcounter.com/settings/main
 - [ ] Migrate from Netlify to Cloudflare Pages
 
+## Goal: tint project icons orange
+
+Mirror of Tasker project `4rays-net`. One focused PR. Validate with `pnpm check`, `pnpm format:check`, and `pnpm build`, and check the page in a browser in light and dark.
+
+- [ ] Tint the project circle icons orange at rest (Tasker #543) (Goal 6a952708a8fb)
+      Criteria C1 and C2. Verified against 3e3a1e9.
+      Gap: src/components/CircleLink.astro sets `.disc :global(img) { filter: grayscale(1) contrast(1.05); }`, so the Circle and Combolab images are grayscale at rest and reveal full colour on hover/focus. The non-interactive TBA circle shows the mark 極秘 in `.monogram` (src/pages/[...lang]/index.astro) in var(--muted-foreground), which is gray.
+      Scope:
+  - In CircleLink.astro, give image discs a monochrome orange tint at rest from the existing --accent token. Recommended: keep the image luminance and apply the accent hue with an overlay (for example `.disc:has(img)::after` filled with var(--accent), `mix-blend-mode: color`, `isolation: isolate` on .disc, `pointer-events: none`). No sepia/hue-rotate approximations and no hardcoded colours.
+  - On hover and keyboard focus, fade the tint out so the image comes to full colour. Keep the scale, ring, shadow and label transitions unchanged.
+  - In index.astro, colour the TBA `.monogram` with var(--accent) (large text, about 3.2:1 on the light card and 5:1 on the dark card). It stays non-interactive.
+  - Under prefers-reduced-motion: reduce, keep the colour reveal on hover/focus with no scale or movement.
+  - Do not change the contact circle, logo, lattice, artwork files, copy, layout or breakpoints. Add no dependencies.
+  - Acceptance: at rest, Circle, Combolab and the TBA mark read as the same orange monochrome and each image stays recognizable, in light and dark. Hover or Tab focus on Circle and Combolab shows full colour with the ring trace and the focus outline. With reduced motion emulated, the reveal still happens without scaling. The contact circle and the rest of the page look the same as on 3e3a1e9. pnpm check, pnpm format:check and pnpm build pass. The PR records browser evidence (light and dark; rest and hover/focus).
+
 ## Goal: finish the indigo-static migration
 
 Mirror of Tasker project `4rays-net`. Do the items in order: each is one focused PR. Validate with `pnpm check`, `pnpm format:check`, and `pnpm build` (the CI gates). The completed Architecture Sync items are in Git history.
