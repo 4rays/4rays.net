@@ -63,10 +63,14 @@ const previewImageURL = previewImage
     <!-- Canonical URL -->
     <link rel="canonical" href={canonicalURL} />
 
+    <!-- Sitemap -->
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
     <!-- Primary Meta Tags -->
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
 
     <!-- Additional Meta Tags -->
     <slot name="head" />
@@ -84,6 +88,10 @@ const previewImageURL = previewImage
     <meta property="twitter:url" content={Astro.url} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
+
+    {previewImageURL && (
+      <meta property="twitter:image" content={previewImageURL} />
+    )}
   </head>
   <body>
     <slot />

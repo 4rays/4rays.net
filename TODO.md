@@ -9,7 +9,7 @@
 
 Mirror of Tasker project `4rays-net`. Do the items in order: each is one focused PR. Validate with `pnpm check`, `pnpm format:check`, and `pnpm build` (the CI gates). The completed Architecture Sync items are in Git history.
 
-- [ ] Complete the SEO head and add robots.txt (Tasker #516) (Goal 00f314685a5c)
+- [x] Complete the SEO head and add robots.txt (Tasker #516) (Goal 00f314685a5c)
       Criterion C2. Re-verified against 50fbc5f (post-redesign).
       Gap: src/layouts/Base.astro has canonical, Open Graph and Twitter tags, but no sitemap link, no generator meta, and no twitter:image even when previewImage is passed. @astrojs/sitemap builds sitemap-index.xml, but public/robots.txt does not exist.
       Scope: in Base.astro add `<link rel="sitemap" href="/sitemap-index.xml" />`, `<meta name="generator" content={Astro.generator} />`, and a twitter:image meta that mirrors the existing conditional og:image (same previewImageURL, same attribute style as the other twitter tags). Add public/robots.txt: `User-agent: *`, `Allow: /`, `Sitemap: https://4rays.net/sitemap-index.xml`. Do not change the title format, copy, or the commented-out icon block.
