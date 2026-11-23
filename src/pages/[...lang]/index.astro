@@ -52,13 +52,24 @@ const monogram = (name: string) =>
               tagline={t.home.projects[project.id].tagline}
             >
               {project.image ? (
-                <img
-                  src={project.image}
-                  alt=""
-                  width="256"
-                  height="256"
-                  loading="lazy"
-                />
+                <>
+                  <img
+                    src={project.image}
+                    alt=""
+                    width="256"
+                    height="256"
+                    loading="lazy"
+                  />
+                  <img
+                    src={project.image}
+                    alt=""
+                    aria-hidden="true"
+                    class="reveal"
+                    width="256"
+                    height="256"
+                    loading="lazy"
+                  />
+                </>
               ) : (
                 <span class="monogram" lang={project.markLang}>
                   {project.mark ?? monogram(project.name)}
@@ -215,7 +226,7 @@ const monogram = (name: string) =>
     font-size: 1.6rem;
     font-weight: 300;
     letter-spacing: 0.08em;
-    color: var(--muted-foreground);
+    color: var(--accent);
   }
 
   .monogram:lang(ja) {

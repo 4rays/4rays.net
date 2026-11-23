@@ -1,7 +1,8 @@
 ---
 /**
  * A circular link. The disc content comes from the default slot.
- * Hover / focus: the ring traces itself in and the image comes to full colour.
+ * Image discs carry an orange monochrome tint at rest; hover / focus traces
+ * the ring in and crossfades a colour copy of the image over the tint.
  */
 interface Props {
   /** Leave out to render a non-interactive circle (for example, an unreleased project). */
@@ -73,6 +74,8 @@ const Tag = href ? "a" : "div";
     box-shadow:
       inset 0 0 0 1px var(--border),
       0 10px 30px -12px rgb(0 0 0 / 0.45);
+    /* Keep the tint overlay's blend mode inside the disc. */
+    isolation: isolate;
     transition:
       box-shadow 0.5s var(--ease),
       background-color 0.4s var(--ease);
@@ -82,10 +85,31 @@ const Tag = href ? "a" : "div";
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: grayscale(1) contrast(1.05);
     transform: scale(1.001);
+  }
+
+  /* Orange monochrome tint at rest: the accent hue over the image's own
+     luminance, so the artwork stays recognizable. The blend layer and the
+     image under it never animate; WebKit's blend compositing stays stable
+     that way, and the reveal happens on a colour copy above the tint. */
+  .disc:has(:global(img))::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    mix-blend-mode: color;
+    pointer-events: none;
+  }
+
+  /* The colour copy fades straight in over the static tint, so WebKit
+     never recomposites the blend group during the transition. */
+  .disc :global(img.reveal) {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    opacity: 0;
     transition:
-      filter 0.5s var(--ease),
+      opacity 0.5s var(--ease),
       transform 0.7s var(--ease);
   }
 
@@ -145,8 +169,8 @@ const Tag = href ? "a" : "div";
       0 18px 40px -14px color-mix(in oklab, var(--accent) 45%, transparent);
   }
 
-  .circle:is(:hover, :focus-visible) .disc :global(img) {
-    filter: none;
+  .circle:is(:hover, :focus-visible) .disc :global(img.reveal) {
+    opacity: 1;
     transform: scale(1.08);
   }
 
@@ -187,11 +211,13 @@ const Tag = href ? "a" : "div";
       transition-delay: 0s !important;
     }
 
-    .disc :global(img) {
-      transition: filter 0.3s linear;
+    .disc :global(img.reveal) {
+      transition:
+        opacity 0.3s linear,
+        transform 0.01s linear;
     }
 
-    .circle:is(:hover, :focus-visible) .disc :global(img) {
+    .circle:is(:hover, :focus-visible) .disc :global(img.reveal) {
       transform: none;
     }
   }
